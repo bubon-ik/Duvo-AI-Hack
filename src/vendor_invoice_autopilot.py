@@ -62,6 +62,7 @@ class InvoiceAutopilot:
         status = self._status_for(reasons, risk_score)
         suggested_action = self._suggested_action(status)
         requires_human_approval = status != "approved" or self._is_high_value(invoice)
+        case_state = "closed" if status == "approved" else "open"
 
         return {
             "vendor_name": invoice.get("vendor_name", ""),
@@ -77,7 +78,30 @@ class InvoiceAutopilot:
             "suggested_action": suggested_action,
             "requires_human_approval": requires_human_approval,
             "draft_email": self._draft_email(invoice, reasons) if status == "dispute" else "",
+            "case_state": case_state,
+            "resolution_notes": "",
         }
+
+    def resolve_from_vendor_reply(self, reply, existing_review):
+        invoice_number = reply.get("invoice_number", "")
+        if invoice_number != existing_review.get("invoice_number", ""):
+            return self._unresolved_reply(
+                reply,
+                existing_review,
+                "Vendor reply does not match the open invoice case",
+            )
+
+        status = existing_review.get("status", "")
+        if status == "dispute":
+            return self._resolve_dispute(reply, existing_review)
+        if status == "needs_review":
+            return self._resolve_needs_review(reply, existing_review)
+
+        return self._unresolved_reply(
+            reply,
+            existing_review,
+            f"Invoice case is not open for resolution: {status}",
+        )
 
     def _amount_risk(self, invoice, purchase_order, reasons):
         amount = _decimal(invoice.get("amount", ""))
@@ -131,6 +155,91 @@ class InvoiceAutopilot:
             "Please send a corrected invoice or confirm the discrepancy so we can continue processing.\n\n"
             "Best,\nAP Operations"
         )
+
+    def _resolve_dispute(self, reply, existing_review):
+        po_number = reply.get("po_number") or existing_review.get("po_number", "")
+        purchase_order = self.purchase_orders.get(po_number)
+        corrected_amount = _decimal(reply.get("corrected_amount", ""))
+
+        if not purchase_order:
+            return self._unresolved_reply(reply, existing_review, "Referenced PO was not found")
+        if corrected_amount is None:
+            return self._unresolved_reply(reply, existing_review, "Reply did not include a corrected amount")
+        if corrected_amount != _decimal(purchase_order.get("expected_amount", "")):
+            return self._unresolved_reply(
+                reply,
+                existing_review,
+                "Corrected amount still does not match the PO amount",
+            )
+
+        resolved = dict(existing_review)
+        resolved["amount"] = reply.get("corrected_amount", existing_review.get("amount", ""))
+        resolved.update(
+            {
+                "status": "resolved",
+                "risk_score": 0,
+                "reasons": [],
+                "suggested_action": "Process corrected invoice for payment",
+                "requires_human_approval": self._is_high_value(resolved),
+                "draft_email": "",
+                "case_state": "closed",
+                "resolution_notes": (
+                    f"Vendor corrected amount matches {po_number}; "
+                    f"{reply.get('reply_summary', '').strip()}"
+                ).strip(),
+            }
+        )
+        return resolved
+
+    def _resolve_needs_review(self, reply, existing_review):
+        po_number = reply.get("confirmed_po_number") or reply.get("po_number", "")
+        purchase_order = self.purchase_orders.get(po_number)
+
+        if not purchase_order:
+            return self._unresolved_reply(reply, existing_review, "Confirmed PO was not found")
+        if purchase_order["vendor_name"] != existing_review.get("vendor_name"):
+            return self._unresolved_reply(reply, existing_review, "Confirmed PO belongs to a different vendor")
+        if purchase_order["currency"] != existing_review.get("currency"):
+            return self._unresolved_reply(reply, existing_review, "Confirmed PO currency does not match")
+        if _decimal(purchase_order["expected_amount"]) != _decimal(existing_review.get("amount", "")):
+            return self._unresolved_reply(reply, existing_review, "Confirmed PO amount does not match")
+        if purchase_order["delivery_status"] != "delivered":
+            return self._unresolved_reply(reply, existing_review, "Confirmed PO delivery is not complete")
+
+        resolved = dict(existing_review)
+        resolved.update(
+            {
+                "po_number": po_number,
+                "status": "approved",
+                "risk_score": 0,
+                "reasons": [],
+                "suggested_action": "Mark ready for payment",
+                "requires_human_approval": self._is_high_value(resolved),
+                "draft_email": "",
+                "case_state": "closed",
+                "resolution_notes": (
+                    f"Vendor confirmed PO matches {po_number}; "
+                    f"{reply.get('reply_summary', '').strip()}"
+                ).strip(),
+            }
+        )
+        return resolved
+
+    def _unresolved_reply(self, reply, existing_review, reason):
+        unresolved = dict(existing_review)
+        unresolved.update(
+            {
+                "risk_score": max(int(existing_review.get("risk_score", 0) or 0), 65),
+                "reasons": [reason],
+                "suggested_action": "Keep case open and ask AP owner to review vendor reply",
+                "requires_human_approval": True,
+                "case_state": "open",
+                "resolution_notes": (
+                    f"{reason}; {reply.get('reply_summary', '').strip()}"
+                ).strip(),
+            }
+        )
+        return unresolved
 
 
 def _decimal(value):

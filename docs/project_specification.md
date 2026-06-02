@@ -89,6 +89,7 @@ Purpose:
 Expected input:
 
 - Vendor email with invoice details in body or attachment.
+- Vendor reply email with a correction, confirmed PO number, or supporting explanation.
 
 Demo fallback:
 
@@ -135,6 +136,8 @@ Required tabs:
 - `suggested_action`
 - `requires_human_approval`
 - `draft_email`
+- `case_state`
+- `resolution_notes`
 
 ### Duvo Files
 
@@ -158,6 +161,9 @@ The assignment should:
 - Write a review row.
 - Ask for approval when required.
 - Draft vendor dispute email for risky invoices.
+- Detect vendor replies that reference an existing invoice number.
+- Link replies back to open `invoice_reviews` cases.
+- Close corrected disputes as `resolved` and missing-PO confirmations as `approved` when policy checks pass.
 
 ### Local Demo Engine
 

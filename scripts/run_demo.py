@@ -15,6 +15,7 @@ def main():
     vendors = read_csv(ROOT / "data" / "vendors.csv")
     purchase_orders = read_csv(ROOT / "data" / "purchase_orders.csv")
     invoices = read_invoices(ROOT / "demo_invoices")
+    replies = read_invoices(ROOT / "demo_replies")
 
     autopilot = InvoiceAutopilot(
         vendors=vendors,
@@ -28,6 +29,16 @@ def main():
         review["reviewed_at"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
         review["reasons"] = " | ".join(review["reasons"])
         reviews.append(review)
+
+    open_reviews = {review["invoice_number"]: review for review in reviews if review["case_state"] == "open"}
+    for reply in replies:
+        existing_review = open_reviews.get(reply.get("invoice_number", ""))
+        if not existing_review:
+            continue
+        resolution = autopilot.resolve_from_vendor_reply(reply, existing_review)
+        resolution["reviewed_at"] = datetime.now(timezone.utc).isoformat(timespec="seconds")
+        resolution["reasons"] = " | ".join(resolution["reasons"])
+        reviews.append(resolution)
 
     out_dir = ROOT / "out"
     out_dir.mkdir(exist_ok=True)
@@ -70,6 +81,8 @@ def write_reviews(path, reviews):
         "suggested_action",
         "requires_human_approval",
         "draft_email",
+        "case_state",
+        "resolution_notes",
     ]
     with path.open("w", newline="", encoding="utf-8") as file:
         writer = csv.DictWriter(file, fieldnames=fieldnames)

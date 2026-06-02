@@ -127,6 +127,68 @@ class InvoiceAutopilotTest(unittest.TestCase):
         self.assertIn("Missing required field: vendor_name", result["reasons"])
         self.assertIn("Missing required field: amount", result["reasons"])
 
+    def test_vendor_correction_resolves_overcharge_dispute(self):
+        existing_review = self.autopilot.review(
+            {
+                "vendor_name": "Acme Packaging",
+                "invoice_number": "INV-ACME-1043",
+                "po_number": "PO-2026-ACME-1042",
+                "amount": "5100.00",
+                "currency": "EUR",
+                "vat_rate": "21",
+                "due_date": "2026-07-02",
+            }
+        )
+
+        result = self.autopilot.resolve_from_vendor_reply(
+            {
+                "vendor_name": "Acme Packaging",
+                "invoice_number": "INV-ACME-1043",
+                "po_number": "PO-2026-ACME-1042",
+                "corrected_amount": "4200.00",
+                "currency": "EUR",
+                "reply_summary": "Vendor sent a corrected invoice for EUR 4200.00.",
+            },
+            existing_review,
+        )
+
+        self.assertEqual(result["status"], "resolved")
+        self.assertEqual(result["case_state"], "closed")
+        self.assertEqual(result["risk_score"], 0)
+        self.assertFalse(result["requires_human_approval"])
+        self.assertIn("corrected amount matches", result["resolution_notes"])
+
+    def test_vendor_po_reply_approves_missing_po_case(self):
+        existing_review = self.autopilot.review(
+            {
+                "vendor_name": "Prague Office Supplies",
+                "invoice_number": "INV-POS-881",
+                "po_number": "",
+                "amount": "850.00",
+                "currency": "EUR",
+                "vat_rate": "21",
+                "due_date": "2026-06-18",
+            }
+        )
+
+        result = self.autopilot.resolve_from_vendor_reply(
+            {
+                "vendor_name": "Prague Office Supplies",
+                "invoice_number": "INV-POS-881",
+                "confirmed_po_number": "PO-2026-POS-0091",
+                "currency": "EUR",
+                "reply_summary": "Vendor confirmed PO-2026-POS-0091.",
+            },
+            existing_review,
+        )
+
+        self.assertEqual(result["status"], "approved")
+        self.assertEqual(result["case_state"], "closed")
+        self.assertEqual(result["po_number"], "PO-2026-POS-0091")
+        self.assertEqual(result["risk_score"], 0)
+        self.assertFalse(result["requires_human_approval"])
+        self.assertIn("confirmed PO matches", result["resolution_notes"])
+
 
 if __name__ == "__main__":
     unittest.main()

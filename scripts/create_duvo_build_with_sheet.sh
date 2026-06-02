@@ -2,7 +2,7 @@
 set -euo pipefail
 
 BASE_URL="${DUVO_BASE_URL:-https://api.duvo.ai/v1}"
-AGENT_ID="${DUVO_AGENT_ID:-6a59a0d6-7b63-4809-b389-a8b4a1b8f4c8}"
+AGENT_ID="${DUVO_AGENT_ID:-45e90130-ea6f-4fce-ad06-e3e7694e7b58}"
 PAYLOAD_TEMPLATE="${1:-duvo/create_assignment_payload.json}"
 
 if [[ -z "${DUVO_API_KEY:-}" ]]; then
@@ -42,8 +42,11 @@ data["input"] = (
     f"Use this Google Sheet as the system of record: {sheet_url}\n\n"
     "Read tabs exactly named vendors, purchase_orders, and invoice_reviews. "
     "Write all new review rows to invoice_reviews. "
-    "Search Gmail for new messages whose subject starts with 'DUVO DEMO Invoice'. "
-    "For the live demo, process the newest matching invoice email first."
+    "Search Gmail for new messages whose subject starts with 'DUVO DEMO Invoice' "
+    "or vendor replies whose subject contains an existing invoice number. "
+    "For the live demo, process the newest matching invoice or vendor reply email first. "
+    "If the message is a vendor reply, find the matching open invoice case in invoice_reviews "
+    "and update case_state/resolution_notes instead of creating a duplicate invoice dispute."
 )
 
 payload = {

@@ -1,0 +1,8 @@
+{
+  "vendor_name": "Acme Packaging",
+  "invoice_number": "INV-ACME-1043",
+  "po_number": "PO-2026-ACME-1042",
+  "corrected_amount": "4200.00",
+  "currency": "EUR",
+  "reply_summary": "Vendor acknowledged the overcharge and sent a corrected invoice for EUR 4200.00."
+}

@@ -16,6 +16,14 @@ Live run:
    - It writes the review row.
 5. For the overcharged invoice, show the Human-in-the-Loop approval request.
 6. Approve the draft dispute email and show the generated message.
+7. Send the vendor correction reply for the disputed invoice.
+8. Run Duvo again and show that it links the reply to the open case instead of treating it as a new invoice.
+9. Show the case move from `dispute/open` to `resolved/closed` with resolution notes.
+10. Repeat with the missing-PO vendor reply and show `needs_review/open` become `approved/closed`.
+
+Wow moment:
+
+"Most invoice demos stop when AI detects a problem. We continue until the business process is resolved. Duvo catches the issue, asks for human approval, sends the vendor email, reads the vendor's reply, validates the correction, and closes the case with an audit trail."
 
 Closing:
 
@@ -27,3 +35,4 @@ Metrics to claim in the pitch:
 - Demo batch: 3 invoices reviewed in seconds.
 - Caught overpayment: EUR 900 on one invoice.
 - Control improvement: dispute emails and high-value approvals require human sign-off.
+- Closed-loop resolution: vendor corrections are linked back to the original case and update the system of record automatically.

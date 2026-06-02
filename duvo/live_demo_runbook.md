@@ -16,6 +16,25 @@
 | Overcharged invoice `INV-ACME-1043` | `d846e86c-0f76-4efb-aa25-6a4123d2bf39` | `invoice_reviews!A3:N3` | `dispute`, risk `80`, caught EUR 900 overcharge, HITL approval before dispute email |
 | Missing PO invoice `INV-POS-881` | `221b04f2-2e63-41de-b53d-250616b3e3a3` | `invoice_reviews!A4:N4` | `needs_review`, risk `55`, HITL question and approval before vendor follow-up |
 
+## Closed-Loop Wow Moment
+
+Most invoice demos stop after detecting a problem. This demo continues until the business process is resolved.
+
+Use these reply emails after the initial dispute/review runs:
+
+- `demo_inbox/04_corrected_acme_reply.eml`
+  - Vendor admits `INV-ACME-1043` was overcharged.
+  - Corrected amount is EUR 4200.00 for `PO-2026-ACME-1042`.
+  - Expected Duvo outcome: find the open dispute row, validate the correction, write `resolved`, `case_state=closed`, and record resolution notes.
+- `demo_inbox/05_prague_po_reply.eml`
+  - Vendor confirms the missing PO for `INV-POS-881`.
+  - Confirmed PO is `PO-2026-POS-0091`.
+  - Expected Duvo outcome: find the open needs-review row, validate PO/vendor/amount/currency/delivery, write `approved`, `case_state=closed`, and record resolution notes.
+
+Stage line:
+
+`Most demos show detection. We show recovery: Duvo catches the issue, emails the vendor with approval, reads the vendor's reply, and closes the case with a full audit trail.`
+
 ## Demo Storyline
 
 1. Show Gmail intake with the three `DUVO DEMO Invoice` messages.
@@ -63,6 +82,10 @@ scripts/get_duvo_run_messages.sh
 7. Expected result: `dispute`, risk score around `80`, and a human approval request before sending a dispute email.
 8. Repeat with `DUVO DEMO Invoice INV-POS-881 missing PO`.
 9. Expected result: `needs_review`, human question, then approval before emailing the vendor for the missing PO.
+10. Send the corrected Acme reply.
+11. Expected result: existing `INV-ACME-1043` case moves from `dispute/open` to `resolved/closed`.
+12. Send the Prague Office PO reply.
+13. Expected result: existing `INV-POS-881` case moves from `needs_review/open` to `approved/closed`.
 
 ## Fallback Demo
 

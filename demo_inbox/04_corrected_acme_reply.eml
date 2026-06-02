@@ -1,0 +1,20 @@
+From: billing@acme-packaging.example
+To: ap@demo-company.example
+Subject: Re: Invoice Dispute: INV-ACME-1043
+
+Hello AP team,
+
+Thank you for catching the discrepancy on INV-ACME-1043.
+
+You were correct: the amount should match PO-2026-ACME-1042.
+Please use the corrected invoice details below.
+
+Vendor: Acme Packaging
+Invoice number: INV-ACME-1043
+PO: PO-2026-ACME-1042
+Corrected amount: EUR 4200.00
+VAT: 21%
+Due date: 2026-07-02
+
+Best,
+Acme Billing

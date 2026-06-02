@@ -9,6 +9,7 @@ The workflow:
 3. Duvo compares the invoice against Google Sheets purchase orders and uploaded policy files.
 4. Duvo logs the review in `invoice_reviews`.
 5. Duvo asks for human approval before sending dispute emails or marking high-value invoices ready for payment.
+6. Duvo handles vendor replies, links them back to the open invoice case, and closes the loop when a correction or missing PO is confirmed.
 
 ## What is in this repo
 
@@ -17,8 +18,9 @@ The workflow:
 - `data/*.csv` - seed data for Google Sheets tabs.
 - `demo_inbox/*.eml` - Gmail-style sample messages for the live story.
 - `demo_invoices/*.json` - extracted invoice payloads matching the sample messages.
+- `demo_replies/*.json` - vendor reply payloads that resolve open dispute and missing-PO cases.
 - `duvo/*.md` - assignment SOP, approval policy, and demo script to paste into Duvo.
-- `tests/test_vendor_invoice_autopilot.py` - five acceptance scenarios from the plan.
+- `tests/test_vendor_invoice_autopilot.py` - acceptance scenarios for invoice review and closed-loop vendor replies.
 
 ## Local demo
 
@@ -29,7 +31,7 @@ python3 -m unittest tests/test_vendor_invoice_autopilot.py
 
 The demo writes `out/invoice_reviews.csv`. Import `data/vendors.csv`, `data/purchase_orders.csv`, and `out/invoice_reviews.csv` into Google Sheets as the three tabs.
 
-For a faster Google Sheets setup, import `outputs/vendor_invoice_autopilot_workbook.xlsx`. It already contains the `vendors`, `purchase_orders`, `invoice_reviews`, and `demo_reviews_backup` tabs.
+For a faster Google Sheets setup, import `outputs/vendor_invoice_autopilot_workbook.xlsx`. It already contains the `vendors`, `purchase_orders`, `invoice_reviews`, and `demo_reviews_backup` tabs. Rebuild it with `scripts/create_workbook.py` after changing demo data.
 
 ## Duvo setup
 
@@ -43,6 +45,7 @@ For a faster Google Sheets setup, import `outputs/vendor_invoice_autopilot_workb
 ## Judging angle
 
 - Real workflow: accounts payable invoice validation.
-- Complexity: extraction, policy lookup, PO matching, duplicate detection, risk scoring, conditional approval.
+- Complexity: extraction, policy lookup, PO matching, duplicate detection, risk scoring, conditional approval, and closed-loop vendor reply resolution.
 - Duvo capabilities: Gmail, Google Sheets, Files, Human-in-the-Loop, audit/live execution.
 - Business impact: prevents overpayment and reduces AP review time.
+- Wow moment: Duvo does not stop at detecting a bad invoice. It emails the vendor with approval, reads the vendor's reply, updates the case state, and leaves a complete audit trail.
