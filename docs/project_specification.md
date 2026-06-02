@@ -2,7 +2,7 @@
 
 ## 1. Elevator Pitch
 
-Procurement Control Tower is a Duvo-powered procurement-to-payment automation that uses Automatic Ordering to validate the upstream PO context, reads incoming vendor invoice emails, extracts invoice details, validates them against purchase order and vendor policy data, logs the decision in Google Sheets, and asks for human approval before risky actions.
+Procurement Control Tower is a Duvo-powered procurement-to-payment automation that orchestrates specialized decision agents, uses Automatic Ordering to validate the upstream PO context, reads incoming vendor invoice emails, extracts invoice details, validates them against purchase order and vendor policy data, logs the decision in Google Sheets, and asks for human approval before risky actions.
 
 The core promise:
 
@@ -48,11 +48,12 @@ The hackathon demo is successful if it shows:
 - Duvo identifies at least one clean invoice and one risky invoice.
 - Duvo writes the result to an `invoice_reviews` Sheet tab.
 - Duvo asks for human approval before sending a dispute email.
+- Duvo shows how the workflow scales through named orchestration roles for intake, ordering context, invoice validation, risk, vendor resolution, and dashboard summary.
 - The demo clearly shows business impact: time saved and overpayment risk caught.
 
 Judging alignment:
 
-- Real workflow and complexity: demand/PO validation, invoice intake, extraction, validation, routing, audit.
+- Real workflow and complexity: multi-agent orchestration, demand/PO validation, invoice intake, extraction, validation, routing, audit.
 - Use of Duvo capabilities: Automatic Ordering, Gmail, Google Sheets, Files, Human-in-the-Loop, live execution/audit trail.
 - Business impact: fewer overpayments, faster AP processing, better compliance.
 - Originality: not generic expense approval; focused on a closed procurement-to-payment control loop.
@@ -67,6 +68,7 @@ The one-day build includes:
 - Duvo SOP for the assignment.
 - Google Sheets schema.
 - Policy files uploaded to Duvo.
+- Multi-agent orchestration SOP for scaling from one invoice to an AP queue.
 - Human approval gate for disputes and high-value approvals.
 - Local deterministic review engine for repeatable demo output.
 - Demo script and pitch narrative.

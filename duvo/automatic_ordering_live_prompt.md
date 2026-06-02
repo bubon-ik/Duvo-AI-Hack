@@ -13,6 +13,17 @@ Before validating any invoice, use Duvo `Automatic Ordering` when available to v
 - `vendors`
 - `invoice_reviews`
 
+When multiple invoice emails or vendor replies are found, orchestrate the workflow as named decision roles in the audit trail:
+
+- Intake Agent: find and classify Gmail messages.
+- Ordering Context Agent: use Automatic Ordering and supporting Sheet tabs to validate PO context.
+- Invoice Validation Agent: extract and validate invoice fields.
+- Risk & Policy Agent: assign status, risk score, reasons, and HITL requirement.
+- Vendor Resolution Agent: draft/send approved vendor emails and close cases from replies.
+- Dashboard Agent: summarize status mix, money at risk, open cases, and closed-loop wins.
+
+For the live demo, still process only one newest matching invoice per run unless explicitly asked to run batch mode.
+
 For a new invoice email:
 
 1. Search Gmail for the newest message whose subject starts with `DUVO DEMO Invoice`.
@@ -42,3 +53,7 @@ For vendor replies:
 Demo stage line:
 
 Most AP automation starts when the invoice arrives. We start earlier: Duvo validates why the PO exists, then protects payment from bad invoices and closes the vendor loop.
+
+Scale line:
+
+For one invoice, you can watch the whole path. For a full AP inbox, Duvo orchestrates specialized agents: intake, ordering context, validation, risk, vendor resolution, and dashboard.

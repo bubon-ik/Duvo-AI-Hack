@@ -11,6 +11,7 @@
   - `duvo/invoice_approval_policy.md`
   - `duvo/dispute_email_style.md`
   - `duvo/automatic_ordering_live_prompt.md`
+  - `duvo/multi_agent_orchestration.md`
 
 ## 2. Google Sheet Tabs
 
@@ -36,6 +37,7 @@ Demo rows to show:
 3. Show Gmail invoice.
 4. Run Duvo.
 5. In live execution, point to:
+   - orchestration role;
    - Automatic Ordering / PO context;
    - Gmail extraction;
    - Google Sheets lookup;
@@ -75,3 +77,7 @@ Demo:
 Close:
 
 "This is not a chatbot. It is an auditable procurement-to-payment control tower: demand, PO, invoice, approval, vendor reply, and final resolution in one Duvo execution trail."
+
+Scale line:
+
+"For one invoice, you can watch the whole path. For a full AP inbox, Duvo orchestrates specialized agents: intake, ordering context, validation, risk, vendor resolution, and dashboard."

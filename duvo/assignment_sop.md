@@ -8,6 +8,14 @@ Inputs:
 - Google Sheets tabs: `vendors`, `demand_forecasts`, `inventory_position`, `supplier_rules`, `purchase_orders`, `invoice_reviews`.
 - Uploaded policy files: `invoice_approval_policy.md` and `dispute_email_style.md`.
 - Duvo skill: `Automatic Ordering`.
+- Optional orchestration reference: `multi_agent_orchestration.md`.
+
+Procedure for multi-agent orchestration:
+
+1. When multiple invoice emails or vendor replies are found, structure the work as named decision roles in the live audit trail.
+2. Use these roles: Intake Agent, Ordering Context Agent, Invoice Validation Agent, Risk & Policy Agent, Vendor Resolution Agent, and Dashboard Agent.
+3. Each role should leave a concise intermediate note before the final Sheet write.
+4. For the live hackathon demo, process one newest matching invoice per run unless explicitly asked to run batch mode.
 
 Procedure for upstream PO context:
 
@@ -58,4 +66,4 @@ Approval title format:
 
 Demo note:
 
-During the live demo, open the Duvo live execution view and narrate the checks as they appear: Automatic Ordering PO context, extraction, Sheets lookup, policy reasoning, row write, approval request, draft dispute email, vendor reply handling, and final case closure.
+During the live demo, open the Duvo live execution view and narrate the checks as they appear: orchestration role, Automatic Ordering PO context, extraction, Sheets lookup, policy reasoning, row write, approval request, draft dispute email, vendor reply handling, and final case closure.
