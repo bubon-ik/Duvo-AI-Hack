@@ -26,10 +26,12 @@ The workflow:
 
 ```bash
 python3 scripts/run_demo.py
-python3 -m unittest tests/test_vendor_invoice_autopilot.py
+python3 scripts/run_real_case_test.py
+python3 -m unittest tests/test_vendor_invoice_autopilot.py tests/test_real_case_email_flow.py
 ```
 
 The demo writes `out/invoice_reviews.csv`. Import `data/vendors.csv`, `data/purchase_orders.csv`, and `out/invoice_reviews.csv` into Google Sheets as the three tabs.
+The real-case smoke test writes `out/real_case_invoice_reviews.csv` and uses the four email fixtures in `live_cases/emails/`.
 
 For a faster Google Sheets setup, import `outputs/vendor_invoice_autopilot_workbook.xlsx`. It already contains the `vendors`, `purchase_orders`, `invoice_reviews`, and `demo_reviews_backup` tabs. Rebuild it with `scripts/create_workbook.py` after changing demo data.
 

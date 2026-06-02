@@ -1,0 +1,19 @@
+From: acme.billing.demo@gmail.example
+To: ap.demo.company@gmail.example
+Subject: Re: Invoice Dispute: INV-LIVE-ACME-3001
+
+Hello AP team,
+
+Thank you for catching this. You are right: invoice INV-LIVE-ACME-3001 was accidentally issued for EUR 5100.00.
+
+Please use the corrected invoice details:
+
+Vendor: Acme Packaging
+Invoice number: INV-LIVE-ACME-3001
+PO: PO-2026-ACME-1042
+Corrected amount: EUR 4200.00
+VAT: 21%
+Due date: 2026-07-02
+
+Best,
+Acme Billing

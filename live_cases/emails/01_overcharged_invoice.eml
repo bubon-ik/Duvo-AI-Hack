@@ -1,0 +1,17 @@
+From: acme.billing.demo@gmail.example
+To: ap.demo.company@gmail.example
+Subject: DUVO DEMO Invoice INV-LIVE-ACME-3001 for PO-2026-ACME-1042
+
+Hello AP team,
+
+Please find attached invoice INV-LIVE-ACME-3001.
+
+Vendor: Acme Packaging
+Invoice number: INV-LIVE-ACME-3001
+PO: PO-2026-ACME-1042
+Amount: EUR 5100.00
+VAT: 21%
+Due date: 2026-07-02
+
+Best,
+Acme Billing

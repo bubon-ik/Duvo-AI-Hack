@@ -20,6 +20,20 @@
 
 Most invoice demos stop after detecting a problem. This demo continues until the business process is resolved.
 
+For a clean live smoke test with unique invoice numbers, use the fixtures in `live_cases/emails/`:
+
+1. `01_overcharged_invoice.eml` -> expected `dispute/open`
+2. `02_overcharged_correction_reply.eml` -> expected `resolved/closed`
+3. `03_missing_po_invoice.eml` -> expected `needs_review/open`
+4. `04_missing_po_confirmation_reply.eml` -> expected `approved/closed`
+
+Local verification:
+
+```bash
+python3 scripts/run_real_case_test.py
+python3 -m unittest tests/test_real_case_email_flow.py
+```
+
 Use these reply emails after the initial dispute/review runs:
 
 - `demo_inbox/04_corrected_acme_reply.eml`

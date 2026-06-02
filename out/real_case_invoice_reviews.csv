@@ -1,0 +1,16 @@
+reviewed_at,vendor_name,invoice_number,po_number,amount,currency,vat_rate,due_date,status,risk_score,reasons,suggested_action,requires_human_approval,draft_email,case_state,resolution_notes
+2026-06-02T11:08:32+00:00,Acme Packaging,INV-LIVE-ACME-3001,PO-2026-ACME-1042,5100.00,EUR,21,2026-07-02,dispute,80,Invoice is 900.00 over the PO amount,Send dispute email after approval,True,"Subject: Invoice INV-LIVE-ACME-3001 requires correction
+
+Hi Acme Packaging,
+
+We reviewed your invoice and cannot approve it for payment yet.
+
+Issues found: Invoice is 900.00 over the PO amount.
+
+Please send a corrected invoice or confirm the discrepancy so we can continue processing.
+
+Best,
+AP Operations",open,
+2026-06-02T11:08:32+00:00,Acme Packaging,INV-LIVE-ACME-3001,PO-2026-ACME-1042,4200.00,EUR,21,2026-07-02,resolved,0,,Process corrected invoice for payment,False,,closed,Vendor corrected amount matches PO-2026-ACME-1042; Vendor acknowledged the overcharge and corrected INV-LIVE-ACME-3001 to EUR 4200.00.
+2026-06-02T11:08:32+00:00,Prague Office Supplies,INV-LIVE-POS-3002,,850.00,EUR,21,2026-06-18,needs_review,45,Missing PO number,Ask AP owner for missing context,True,,open,
+2026-06-02T11:08:32+00:00,Prague Office Supplies,INV-LIVE-POS-3002,PO-2026-POS-0091,850.00,EUR,21,2026-06-18,approved,0,,Mark ready for payment,False,,closed,Vendor confirmed PO matches PO-2026-POS-0091; Vendor confirmed PO-2026-POS-0091 for INV-LIVE-POS-3002.
