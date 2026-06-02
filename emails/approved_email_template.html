@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="x-apple-disable-message-reformatting">
+  <title>Invoice approved for payment</title>
+  <!-- Duvo approval confirmation email. Email-safe table layout, inline styles. -->
+</head>
+<body style="margin:0; padding:0; background-color:#f4f5f3; font-family:'Segoe UI',Helvetica,Arial,sans-serif; -webkit-font-smoothing:antialiased;">
+
+  <div style="display:none; max-height:0; overflow:hidden; opacity:0; color:transparent;">
+    Invoice {{invoice_number}} passed all checks and is scheduled for payment.
+  </div>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f5f3;">
+    <tr>
+      <td align="center" style="padding:32px 16px;">
+
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px; background-color:#ffffff; border:1px solid #e7e9e5; border-radius:16px; overflow:hidden;">
+
+          <!-- Header -->
+          <tr>
+            <td style="padding:24px 32px; border-bottom:1px solid #e7e9e5;">
+              <table role="presentation" cellpadding="0" cellspacing="0"><tr>
+                <td>
+                  <table role="presentation" cellpadding="0" cellspacing="0"><tr>
+                    <td style="width:36px; height:36px; background-color:#16a34a; border-radius:10px; text-align:center; vertical-align:middle; color:#ffffff; font-size:18px; font-weight:700;">D</td>
+                    <td style="padding-left:10px; font-size:18px; font-weight:600; color:#1a1f1c; vertical-align:middle;">Duvo</td>
+                  </tr></table>
+                </td>
+                <td align="right" style="vertical-align:middle; font-size:12px; color:#8a938c;">Accounts Payable</td>
+              </tr></table>
+            </td>
+          </tr>
+
+          <!-- Success banner -->
+          <tr>
+            <td style="padding:24px 32px 0 32px;">
+              <table role="presentation" cellpadding="0" cellspacing="0" style="background-color:#e8f5ec; border-radius:12px; width:100%;">
+                <tr>
+                  <td style="padding:12px 16px; font-size:13px; font-weight:600; color:#15803d;">
+                    &#10003;&nbsp; Invoice approved and scheduled for payment
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Body -->
+          <tr>
+            <td style="padding:24px 32px 8px 32px;">
+              <h1 style="margin:0 0 8px 0; font-size:22px; font-weight:600; color:#1a1f1c; letter-spacing:-0.02em;">
+                Invoice {{invoice_number}} is approved
+              </h1>
+              <p style="margin:0; font-size:15px; line-height:1.6; color:#4a534d;">Hi {{vendor_name}},</p>
+              <p style="margin:12px 0 0 0; font-size:15px; line-height:1.6; color:#4a534d;">
+                Your invoice matched the purchase order and passed all approval checks. It is now scheduled for payment by the due date below.
+              </p>
+            </td>
+          </tr>
+
+          <!-- Summary -->
+          <tr>
+            <td style="padding:20px 32px 0 32px;">
+              <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="background-color:#f7f8f6; border:1px solid #e7e9e5; border-radius:12px;">
+                <tr><td style="padding:16px 20px;">
+                  <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="font-size:13px;">
+                    <tr><td style="padding:4px 0; color:#8a938c;">Invoice number</td><td align="right" style="padding:4px 0; color:#1a1f1c; font-weight:600; font-family:'Courier New',monospace;">{{invoice_number}}</td></tr>
+                    <tr><td style="padding:4px 0; color:#8a938c;">Purchase order</td><td align="right" style="padding:4px 0; color:#1a1f1c; font-weight:600; font-family:'Courier New',monospace;">{{po_number}}</td></tr>
+                    <tr><td style="padding:4px 0; color:#8a938c;">Approved amount</td><td align="right" style="padding:4px 0; color:#16a34a; font-weight:700;">{{amount}}</td></tr>
+                    <tr><td style="padding:4px 0; color:#8a938c;">Payment due</td><td align="right" style="padding:4px 0; color:#1a1f1c; font-weight:600;">{{due_date}}</td></tr>
+                  </table>
+                </td></tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Sign off -->
+          <tr>
+            <td style="padding:28px 32px 32px 32px;">
+              <p style="margin:0; font-size:15px; line-height:1.6; color:#4a534d;">Thank you,</p>
+              <p style="margin:2px 0 0 0; font-size:15px; font-weight:600; color:#1a1f1c;">AP Operations</p>
+            </td>
+          </tr>
+
+        </table>
+
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;">
+          <tr><td style="padding:20px 32px; text-align:center; font-size:12px; line-height:1.6; color:#8a938c;">
+            Reviewed automatically by Duvo Invoice Autopilot. Every review is logged for audit.
+          </td></tr>
+        </table>
+
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>
