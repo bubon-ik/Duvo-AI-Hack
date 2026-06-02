@@ -29,6 +29,8 @@ python3 -m unittest tests/test_vendor_invoice_autopilot.py
 
 The demo writes `out/invoice_reviews.csv`. Import `data/vendors.csv`, `data/purchase_orders.csv`, and `out/invoice_reviews.csv` into Google Sheets as the three tabs.
 
+For a faster Google Sheets setup, import `outputs/vendor_invoice_autopilot_workbook.xlsx`. It already contains the `vendors`, `purchase_orders`, `invoice_reviews`, and `demo_reviews_backup` tabs.
+
 ## Duvo setup
 
 1. Connect Gmail and Google Sheets in Duvo.
