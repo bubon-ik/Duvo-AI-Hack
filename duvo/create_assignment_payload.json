@@ -1,0 +1,30 @@
+{
+  "name": "Vendor Invoice Dispute Autopilot",
+  "build": {
+    "name": "hackathon-demo-v1",
+    "config": {
+      "version": "v2",
+      "data": {
+        "models": {
+          "agent": {
+            "model": "claude-sonnet-4-20250514"
+          }
+        },
+        "input": "Process new vendor invoice emails from Gmail. Extract invoice details, validate them against the Google Sheet tabs named vendors, purchase_orders, and invoice_reviews, apply the uploaded invoice approval policy, write a review row to invoice_reviews, and use Human-in-the-Loop before sending dispute emails or marking high-value invoices ready for payment.",
+        "text": {
+          "format": {
+            "type": "text"
+          }
+        },
+        "files": [],
+        "skills": [
+          "Gmail",
+          "Google Sheets",
+          "Human in the Loop",
+          "Email Attachments Reader"
+        ],
+        "instructions": "Use the SOP in duvo/assignment_sop.md. Use duvo/invoice_approval_policy.md for status and risk routing. Use duvo/dispute_email_style.md for vendor dispute drafts. Never send a vendor dispute email without human approval. Never mark invoices over EUR 5000 ready for payment without human approval."
+      }
+    }
+  }
+}
