@@ -11,12 +11,10 @@ function RiskBar({ score }: { score: number }) {
   const color = score >= 80 ? "var(--danger)" : score >= 40 ? "var(--warn)" : "var(--ok)";
   return (
     <div className="flex items-center gap-2.5">
-      <div className="w-16 h-1.5 rounded-full overflow-hidden" style={{ background: "var(--bg-surface)" }}>
-        <div className="h-full rounded-full transition-all" style={{ width: `${score}%`, background: color }} />
+      <div className="w-14 h-1.5 rounded-full overflow-hidden" style={{ background: "var(--bg-hover)" }}>
+        <div className="h-full rounded-full" style={{ width: `${score}%`, background: color }} />
       </div>
-      <span className="font-mono text-xs font-medium tabular-nums" style={{ color, minWidth: "1.75rem" }}>
-        {score}
-      </span>
+      <span className="font-mono text-xs font-semibold tabular-nums" style={{ color, minWidth: "1.75rem" }}>{score}</span>
     </div>
   );
 }
@@ -27,43 +25,25 @@ export default function InvoiceTable({ invoices }: { invoices: Invoice[] }) {
   return (
     <div
       className="animate-fade-up overflow-hidden"
-      style={{
-        animationDelay: "500ms",
-        background: "var(--bg-panel)",
-        border: "1px solid var(--border)",
-        borderRadius: "var(--radius)",
-      }}
+      style={{ animationDelay: "360ms", background: "var(--bg-card)", border: "1px solid var(--border)", borderRadius: "var(--radius)" }}
     >
-      <div
-        className="px-6 py-4 flex items-center justify-between"
-        style={{ borderBottom: "1px solid var(--border)" }}
-      >
+      <div className="px-6 py-5 flex items-center justify-between">
         <div>
-          <h2 className="text-sm font-semibold" style={{ color: "var(--text-primary)" }}>
-            Latest risky invoices
-          </h2>
-          <p className="text-xs mt-0.5" style={{ color: "var(--text-dim)" }}>
-            Sorted by risk score, {risky.length} records
-          </p>
+          <h2 className="text-base font-semibold" style={{ color: "var(--text-strong)" }}>Latest risky invoices</h2>
+          <p className="text-[13px] mt-0.5" style={{ color: "var(--text-muted)" }}>Sorted by risk score</p>
         </div>
-        <div className="flex items-center gap-1.5">
+        <span className="inline-flex items-center gap-1.5 text-[12px] font-medium px-2.5 py-1 rounded-lg" style={{ color: "var(--text-muted)", background: "var(--bg-subtle)" }}>
           <span className="w-1.5 h-1.5 rounded-full pulse-dot" style={{ background: "var(--accent)" }} />
-          <span className="text-[10px] font-mono tracking-wide" style={{ color: "var(--text-dim)" }}>LIVE</span>
-        </div>
+          Live
+        </span>
       </div>
 
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
-            <tr style={{ borderBottom: "1px solid var(--border)" }}>
-              {["Invoice", "Vendor", "Amount", "Risk", "Status", "Issue", "Action"].map(h => (
-                <th
-                  key={h}
-                  className="px-6 py-3 text-left text-[10px] font-medium tracking-wide uppercase"
-                  style={{ color: "var(--text-dim)" }}
-                >
-                  {h}
-                </th>
+            <tr style={{ borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)" }}>
+              {["Invoice", "Vendor", "Amount", "Risk", "Status", "Issue"].map(h => (
+                <th key={h} className="px-6 py-3 text-left text-[11px] font-semibold tracking-wide uppercase" style={{ color: "var(--text-muted)" }}>{h}</th>
               ))}
             </tr>
           </thead>
@@ -75,46 +55,30 @@ export default function InvoiceTable({ invoices }: { invoices: Invoice[] }) {
                   key={inv.invoice_number}
                   className="transition-colors"
                   style={{ borderBottom: i < risky.length - 1 ? "1px solid var(--border)" : undefined }}
-                  onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = "var(--bg-panel-hover)"}
+                  onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = "var(--bg-subtle)"}
                   onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = "transparent"}
                 >
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="font-mono text-xs font-medium" style={{ color: "var(--accent)" }}>
-                      {inv.invoice_number}
+                    <span className="font-mono text-xs font-semibold" style={{ color: "var(--accent)" }}>{inv.invoice_number}</span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className="text-sm font-medium" style={{ color: "var(--text-strong)" }}>{inv.vendor_name}</span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <span className="font-mono text-sm tabular-nums" style={{ color: "var(--text-body)" }}>
+                      {inv.amount != null ? `€${inv.amount.toLocaleString("cs-CZ")}` : <span style={{ color: "var(--text-muted)" }}>n/a</span>}
                     </span>
                   </td>
+                  <td className="px-6 py-4"><RiskBar score={inv.risk_score} /></td>
                   <td className="px-6 py-4">
-                    <span className="text-sm" style={{ color: "var(--text-primary)" }}>
-                      {inv.vendor_name}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className="font-mono text-sm tabular-nums" style={{ color: "var(--text-primary)" }}>
-                      {inv.amount != null
-                        ? `€${inv.amount.toLocaleString("cs-CZ")}`
-                        : <span style={{ color: "var(--text-dim)" }}>n/a</span>}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <RiskBar score={inv.risk_score} />
-                  </td>
-                  <td className="px-6 py-4">
-                    <span
-                      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium whitespace-nowrap"
-                      style={{ color: s.color, background: s.bg }}
-                    >
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-medium whitespace-nowrap" style={{ color: s.color, background: s.bg }}>
                       <span className="w-1.5 h-1.5 rounded-full" style={{ background: s.color }} />
                       {s.label}
                     </span>
                   </td>
                   <td className="px-6 py-4 max-w-[220px]">
-                    <span className="text-xs truncate block" style={{ color: "var(--text-secondary)" }}>
-                      {inv.reasons || <span style={{ color: "var(--text-dim)" }}>None</span>}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4">
-                    <span className="text-xs" style={{ color: "var(--text-dim)" }}>
-                      {inv.suggested_action}
+                    <span className="text-[13px] truncate block" style={{ color: "var(--text-body)" }}>
+                      {inv.reasons || <span style={{ color: "var(--text-muted)" }}>None</span>}
                     </span>
                   </td>
                 </tr>

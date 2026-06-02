@@ -1,82 +1,60 @@
 @import "tailwindcss";
 
 :root {
-  /* Neutral slate base. One locked accent (blue). Status hues used only for data,
-     softened below 80% saturation per the LILA discipline. */
-  --bg-base: #0a0e16;
-  --bg-panel: #11151f;
-  --bg-panel-hover: #161b27;
-  --bg-surface: #1a2030;
-  --border: #232a3a;
-  --border-bright: #313a4f;
-  --text-primary: #e6e9f0;
-  --text-secondary: #8b94a8;
-  --text-dim: #515b72;
+  /* Light theme. Neutral stone/zinc base, single locked emerald accent.
+     Status hues used only for data, kept under 80% saturation (LILA discipline). */
+  --bg-app: #f4f5f3;
+  --bg-card: #ffffff;
+  --bg-subtle: #f7f8f6;
+  --bg-hover: #f0f2ef;
+  --border: #e7e9e5;
+  --border-strong: #d8dcd5;
 
-  /* Locked brand accent */
-  --accent: #4f8cff;
-  --accent-soft: rgba(79, 140, 255, 0.10);
-  --accent-line: rgba(79, 140, 255, 0.22);
+  --text-strong: #1a1f1c;
+  --text-body: #4a534d;
+  --text-muted: #8a938c;
 
-  /* Functional status hues (data only, desaturated) */
-  --ok: #3ddc84;
-  --ok-soft: rgba(61, 220, 132, 0.10);
-  --warn: #e0a93b;
-  --warn-soft: rgba(224, 169, 59, 0.10);
-  --danger: #e8554e;
-  --danger-soft: rgba(232, 85, 78, 0.10);
+  /* Locked brand accent: emerald */
+  --accent: #16a34a;
+  --accent-deep: #15803d;
+  --accent-soft: #e8f5ec;
+  --accent-ink: #0f5132;
 
-  --radius: 10px;
+  /* Functional status hues (data only) */
+  --ok: #16a34a;
+  --ok-soft: #e8f5ec;
+  --warn: #d97706;
+  --warn-soft: #fdf3e7;
+  --danger: #dc2626;
+  --danger-soft: #fdeaea;
+  --info: #2563eb;
+  --info-soft: #e9eefc;
+
+  --radius: 16px;
+  --radius-sm: 12px;
+  --radius-pill: 9999px;
 }
 
-@theme inline {
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-mono);
-}
-
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
-  background: var(--bg-base);
-  color: var(--text-primary);
-  font-family: var(--font-sans), 'IBM Plex Sans', sans-serif;
+  background: var(--bg-app);
+  color: var(--text-body);
+  font-family: var(--font-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
-}
-
-/* Subtle vignette for depth, no heavy texture */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(
-    120% 80% at 50% -10%,
-    rgba(79, 140, 255, 0.05),
-    transparent 60%
-  );
-  pointer-events: none;
-  z-index: 0;
 }
 
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(12px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-
 @keyframes pulse-dot {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
+  50% { opacity: 0.35; }
 }
 
-.animate-fade-up {
-  animation: fadeUp 0.4s ease forwards;
-  opacity: 0;
-}
-
-.pulse-dot {
-  animation: pulse-dot 1.4s ease-in-out infinite;
-}
+.animate-fade-up { animation: fadeUp 0.45s cubic-bezier(0.16,1,0.3,1) forwards; opacity: 0; }
+.pulse-dot { animation: pulse-dot 1.6s ease-in-out infinite; }
 
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-up { animation: none; opacity: 1; }
