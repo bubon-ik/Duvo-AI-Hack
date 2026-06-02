@@ -1,0 +1,17 @@
+From: billing@prague-office.example
+To: ap@demo-company.example
+Subject: Invoice INV-POS-881
+
+Hello,
+
+Attached is the June office supplies invoice.
+
+Vendor: Prague Office Supplies
+Invoice number: INV-POS-881
+PO: missing
+Amount: EUR 850.00
+VAT: 21%
+Due date: 2026-06-18
+
+Best,
+Prague Office Supplies

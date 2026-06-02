@@ -1,0 +1,4 @@
+po_number,vendor_name,expected_amount,currency,delivery_status,description
+PO-2026-ACME-1042,Acme Packaging,4200.00,EUR,delivered,Q2 packaging materials
+PO-2026-POS-0091,Prague Office Supplies,850.00,EUR,delivered,Office paper and toner
+PO-2026-MOL-3110,Moldau Logistics,2700.00,EUR,pending,May freight batch

@@ -1,0 +1,9 @@
+{
+  "vendor_name": "Acme Packaging",
+  "invoice_number": "INV-ACME-1043",
+  "po_number": "PO-2026-ACME-1042",
+  "amount": "5100.00",
+  "currency": "EUR",
+  "vat_rate": "21",
+  "due_date": "2026-07-02"
+}

@@ -1,0 +1,4 @@
+vendor_name,expected_vat_rate,payment_terms_days,approved_po_prefix,ap_contact
+Acme Packaging,21,30,PO-2026-ACME,ap@acme-packaging.example
+Prague Office Supplies,21,14,PO-2026-POS,billing@prague-office.example
+Moldau Logistics,21,21,PO-2026-MOL,finance@moldau-logistics.example

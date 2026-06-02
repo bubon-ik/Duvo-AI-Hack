@@ -1,0 +1,9 @@
+{
+  "vendor_name": "",
+  "invoice_number": "INV-UNKNOWN-1",
+  "po_number": "PO-2026-ACME-1042",
+  "amount": "",
+  "currency": "EUR",
+  "vat_rate": "21",
+  "due_date": "2026-07-02"
+}

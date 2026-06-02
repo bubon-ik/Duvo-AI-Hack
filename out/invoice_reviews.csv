@@ -1,0 +1,28 @@
+reviewed_at,vendor_name,invoice_number,po_number,amount,currency,vat_rate,due_date,status,risk_score,reasons,suggested_action,requires_human_approval,draft_email
+2026-06-02T08:45:43+00:00,Acme Packaging,INV-ACME-1042,PO-2026-ACME-1042,4200.00,EUR,21,2026-07-02,approved,0,,Mark ready for payment,False,
+2026-06-02T08:45:43+00:00,Acme Packaging,INV-ACME-1020,PO-2026-ACME-1042,4200.00,EUR,21,2026-07-02,dispute,100,Duplicate invoice number,Send dispute email after approval,True,"Subject: Invoice INV-ACME-1020 requires correction
+
+Hi Acme Packaging,
+
+We reviewed your invoice and cannot approve it for payment yet.
+
+Issues found: Duplicate invoice number.
+
+Please send a corrected invoice or confirm the discrepancy so we can continue processing.
+
+Best,
+AP Operations"
+2026-06-02T08:45:43+00:00,,INV-UNKNOWN-1,PO-2026-ACME-1042,,EUR,21,2026-07-02,needs_review,60,Missing required field: vendor_name | Missing required field: amount,Ask AP owner for missing context,True,
+2026-06-02T08:45:43+00:00,Prague Office Supplies,INV-POS-881,,850.00,EUR,21,2026-06-18,needs_review,45,Missing PO number,Ask AP owner for missing context,True,
+2026-06-02T08:45:43+00:00,Acme Packaging,INV-ACME-1043,PO-2026-ACME-1042,5100.00,EUR,21,2026-07-02,dispute,80,Invoice is 900.00 over the PO amount,Send dispute email after approval,True,"Subject: Invoice INV-ACME-1043 requires correction
+
+Hi Acme Packaging,
+
+We reviewed your invoice and cannot approve it for payment yet.
+
+Issues found: Invoice is 900.00 over the PO amount.
+
+Please send a corrected invoice or confirm the discrepancy so we can continue processing.
+
+Best,
+AP Operations"

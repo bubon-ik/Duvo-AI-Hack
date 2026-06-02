@@ -1,0 +1,17 @@
+From: billing@acme-packaging.example
+To: ap@demo-company.example
+Subject: Invoice INV-ACME-1043 for PO-2026-ACME-1042
+
+Hello AP team,
+
+Please find attached invoice INV-ACME-1043.
+
+Vendor: Acme Packaging
+Invoice number: INV-ACME-1043
+PO: PO-2026-ACME-1042
+Amount: EUR 5100.00
+VAT: 21%
+Due date: 2026-07-02
+
+Best,
+Acme Billing
