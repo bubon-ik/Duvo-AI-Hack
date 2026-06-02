@@ -12,6 +12,33 @@ The workflow:
 6. Duvo asks for human approval before sending dispute emails or marking high-value invoices ready for payment.
 7. Duvo handles vendor replies, links them back to the open invoice case, and closes the loop when a correction or missing PO is confirmed.
 
+## How it works
+
+```mermaid
+flowchart LR
+    Gmail["Gmail invoice inbox"] --> Intake["Intake Agent<br/>classify invoice queue"]
+    Intake --> Ordering["Ordering Context Agent<br/>Duvo Automatic Ordering"]
+
+    Forecast["demand_forecasts"] --> Ordering
+    Inventory["inventory_position"] --> Ordering
+    Rules["supplier_rules"] --> Ordering
+    POs["purchase_orders"] --> Ordering
+
+    Ordering --> Validation["Invoice Validation Agent<br/>vendor, PO, amount, VAT, duplicate risk"]
+    Validation --> Risk["Risk & Policy Agent<br/>approved / needs_review / dispute"]
+    Risk --> Sheets["Google Sheets<br/>invoice_reviews"]
+
+    Risk -->|low risk| Ready["Ready for payment"]
+    Risk -->|risky action| HITL["Human-in-the-Loop approval"]
+    HITL --> Vendor["Vendor Resolution Agent<br/>send dispute or PO request"]
+    Vendor --> Reply["Vendor reply in Gmail"]
+    Reply --> Validation
+
+    Sheets --> Dashboard["Dashboard Agent<br/>money at risk, open cases, audit trail"]
+```
+
+In the batch demo, Duvo processed three invoice emails, reordered them by risk, blocked EUR 10,150 in duplicate and overcharged payments, requested approval, sent vendor dispute emails, and updated `invoice_reviews` with Gmail message IDs.
+
 ## What is in this repo
 
 - `src/vendor_invoice_autopilot.py` - deterministic review engine used for local validation and demo output.
