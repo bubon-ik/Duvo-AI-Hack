@@ -8,6 +8,10 @@
         "models": {
           "agent": {
             "model": "claude-sonnet-4-20250514"
+          },
+          "browsing": {
+            "provider": "anthropic",
+            "model": "claude-sonnet-4-5"
           }
         },
         "input": "Process new vendor invoice emails from Gmail. Extract invoice details, validate them against the Google Sheet tabs named vendors, purchase_orders, and invoice_reviews, apply the uploaded invoice approval policy, write a review row to invoice_reviews, and use Human-in-the-Loop before sending dispute emails or marking high-value invoices ready for payment.",
