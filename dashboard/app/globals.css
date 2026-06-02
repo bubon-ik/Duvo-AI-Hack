@@ -1,23 +1,32 @@
 @import "tailwindcss";
 
 :root {
-  --bg-base: #080c14;
-  --bg-panel: #0c1220;
-  --bg-panel-hover: #101828;
-  --bg-surface: #131e2e;
-  --border: #1a2640;
-  --border-bright: #253550;
-  --text-primary: #e0eaff;
-  --text-secondary: #7090b8;
-  --text-dim: #334466;
-  --accent-red: #ff3b3b;
-  --accent-red-dim: #2a1010;
-  --accent-green: #00e676;
-  --accent-green-dim: #0a1f12;
-  --accent-yellow: #ffb300;
-  --accent-yellow-dim: #1f1800;
-  --accent-blue: #448aff;
-  --accent-blue-dim: #0d1626;
+  /* Neutral slate base. One locked accent (blue). Status hues used only for data,
+     softened below 80% saturation per the LILA discipline. */
+  --bg-base: #0a0e16;
+  --bg-panel: #11151f;
+  --bg-panel-hover: #161b27;
+  --bg-surface: #1a2030;
+  --border: #232a3a;
+  --border-bright: #313a4f;
+  --text-primary: #e6e9f0;
+  --text-secondary: #8b94a8;
+  --text-dim: #515b72;
+
+  /* Locked brand accent */
+  --accent: #4f8cff;
+  --accent-soft: rgba(79, 140, 255, 0.10);
+  --accent-line: rgba(79, 140, 255, 0.22);
+
+  /* Functional status hues (data only, desaturated) */
+  --ok: #3ddc84;
+  --ok-soft: rgba(61, 220, 132, 0.10);
+  --warn: #e0a93b;
+  --warn-soft: rgba(224, 169, 59, 0.10);
+  --danger: #e8554e;
+  --danger-soft: rgba(232, 85, 78, 0.10);
+
+  --radius: 10px;
 }
 
 @theme inline {
@@ -36,20 +45,18 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Scanline overlay for terminal feel */
+/* Subtle vignette for depth, no heavy texture */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(0,0,0,0.03) 2px,
-    rgba(0,0,0,0.03) 4px
+  background: radial-gradient(
+    120% 80% at 50% -10%,
+    rgba(79, 140, 255, 0.05),
+    transparent 60%
   );
   pointer-events: none;
-  z-index: 9999;
+  z-index: 0;
 }
 
 @keyframes fadeUp {
@@ -69,4 +76,9 @@ body::before {
 
 .pulse-dot {
   animation: pulse-dot 1.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up { animation: none; opacity: 1; }
+  .pulse-dot { animation: none; }
 }

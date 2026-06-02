@@ -2,22 +2,21 @@
 import { Invoice } from "../data/invoices";
 
 const statusConfig = {
-  approved:     { label: "APPROVED",     color: "#00e676", bg: "rgba(0,230,118,0.08)",     dot: "#00e676" },
-  needs_review: { label: "NEEDS REVIEW", color: "#ffb300", bg: "rgba(255,179,0,0.08)",     dot: "#ffb300" },
-  dispute:      { label: "DISPUTE",      color: "#ff3b3b", bg: "rgba(255,59,59,0.08)",     dot: "#ff3b3b" },
+  approved:     { label: "Approved",     color: "var(--ok)",     bg: "var(--ok-soft)" },
+  needs_review: { label: "Needs review", color: "var(--warn)",   bg: "var(--warn-soft)" },
+  dispute:      { label: "Dispute",      color: "var(--danger)", bg: "var(--danger-soft)" },
 };
 
 function RiskBar({ score }: { score: number }) {
-  const color = score >= 80 ? "#ff3b3b" : score >= 40 ? "#ffb300" : "#00e676";
+  const color = score >= 80 ? "var(--danger)" : score >= 40 ? "var(--warn)" : "var(--ok)";
   return (
-    <div className="flex items-center gap-2">
-      <div className="w-16 h-1 rounded-full" style={{ background: "var(--bg-surface)" }}>
-        <div
-          className="h-full rounded-full transition-all"
-          style={{ width: `${score}%`, background: color, boxShadow: `0 0 6px ${color}88` }}
-        />
+    <div className="flex items-center gap-2.5">
+      <div className="w-16 h-1.5 rounded-full overflow-hidden" style={{ background: "var(--bg-surface)" }}>
+        <div className="h-full rounded-full transition-all" style={{ width: `${score}%`, background: color }} />
       </div>
-      <span className="font-mono text-xs font-medium" style={{ color, minWidth: "2rem" }}>{score}</span>
+      <span className="font-mono text-xs font-medium tabular-nums" style={{ color, minWidth: "1.75rem" }}>
+        {score}
+      </span>
     </div>
   );
 }
@@ -27,29 +26,29 @@ export default function InvoiceTable({ invoices }: { invoices: Invoice[] }) {
 
   return (
     <div
-      className="animate-fade-up rounded-sm overflow-hidden"
+      className="animate-fade-up overflow-hidden"
       style={{
         animationDelay: "500ms",
         background: "var(--bg-panel)",
         border: "1px solid var(--border)",
+        borderRadius: "var(--radius)",
       }}
     >
-      {/* Table header */}
       <div
         className="px-6 py-4 flex items-center justify-between"
-        style={{ borderBottom: "1px solid var(--border)", background: "var(--bg-surface)" }}
+        style={{ borderBottom: "1px solid var(--border)" }}
       >
         <div>
-          <h2 className="text-xs font-mono font-semibold tracking-[0.15em] uppercase" style={{ color: "var(--text-primary)" }}>
-            Latest Risky Invoices
+          <h2 className="text-sm font-semibold" style={{ color: "var(--text-primary)" }}>
+            Latest risky invoices
           </h2>
-          <p className="text-[10px] font-mono mt-0.5" style={{ color: "var(--text-dim)" }}>
-            sorted by risk score — {risky.length} records
+          <p className="text-xs mt-0.5" style={{ color: "var(--text-dim)" }}>
+            Sorted by risk score, {risky.length} records
           </p>
         </div>
         <div className="flex items-center gap-1.5">
-          <div className="w-1.5 h-1.5 rounded-full pulse-dot" style={{ background: "#ff3b3b" }} />
-          <span className="text-[10px] font-mono" style={{ color: "var(--text-dim)" }}>LIVE</span>
+          <span className="w-1.5 h-1.5 rounded-full pulse-dot" style={{ background: "var(--accent)" }} />
+          <span className="text-[10px] font-mono tracking-wide" style={{ color: "var(--text-dim)" }}>LIVE</span>
         </div>
       </div>
 
@@ -57,11 +56,11 @@ export default function InvoiceTable({ invoices }: { invoices: Invoice[] }) {
         <table className="w-full">
           <thead>
             <tr style={{ borderBottom: "1px solid var(--border)" }}>
-              {["Invoice #", "Vendor", "Amount", "Risk", "Status", "Issue", "Action"].map(h => (
+              {["Invoice", "Vendor", "Amount", "Risk", "Status", "Issue", "Action"].map(h => (
                 <th
                   key={h}
-                  className="px-6 py-3 text-left text-[9px] font-mono font-medium tracking-[0.2em] uppercase"
-                  style={{ color: "var(--text-dim)", background: "var(--bg-base)" }}
+                  className="px-6 py-3 text-left text-[10px] font-medium tracking-wide uppercase"
+                  style={{ color: "var(--text-dim)" }}
                 >
                   {h}
                 </th>
@@ -74,30 +73,26 @@ export default function InvoiceTable({ invoices }: { invoices: Invoice[] }) {
               return (
                 <tr
                   key={inv.invoice_number}
-                  className="group transition-colors"
-                  style={{
-                    borderBottom: i < risky.length - 1 ? "1px solid var(--border)" : undefined,
-                    animationDelay: `${600 + i * 60}ms`,
-                  }}
+                  className="transition-colors"
+                  style={{ borderBottom: i < risky.length - 1 ? "1px solid var(--border)" : undefined }}
                   onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = "var(--bg-panel-hover)"}
                   onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = "transparent"}
                 >
-                  <td className="px-6 py-4">
-                    <span className="font-mono text-xs font-medium" style={{ color: "#448aff" }}>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className="font-mono text-xs font-medium" style={{ color: "var(--accent)" }}>
                       {inv.invoice_number}
                     </span>
                   </td>
                   <td className="px-6 py-4">
-                    <span className="text-sm font-medium" style={{ color: "var(--text-primary)" }}>
+                    <span className="text-sm" style={{ color: "var(--text-primary)" }}>
                       {inv.vendor_name}
                     </span>
                   </td>
                   <td className="px-6 py-4">
-                    <span className="font-mono text-sm font-medium" style={{ color: "var(--text-primary)" }}>
+                    <span className="font-mono text-sm tabular-nums" style={{ color: "var(--text-primary)" }}>
                       {inv.amount != null
                         ? `€${inv.amount.toLocaleString("cs-CZ")}`
-                        : <span style={{ color: "var(--text-dim)" }}>—</span>
-                      }
+                        : <span style={{ color: "var(--text-dim)" }}>n/a</span>}
                     </span>
                   </td>
                   <td className="px-6 py-4">
@@ -105,20 +100,20 @@ export default function InvoiceTable({ invoices }: { invoices: Invoice[] }) {
                   </td>
                   <td className="px-6 py-4">
                     <span
-                      className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-sm text-[10px] font-mono font-semibold tracking-wider"
-                      style={{ color: s.color, background: s.bg, border: `1px solid ${s.color}33` }}
+                      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium whitespace-nowrap"
+                      style={{ color: s.color, background: s.bg }}
                     >
-                      <span className="w-1 h-1 rounded-full" style={{ background: s.dot }} />
+                      <span className="w-1.5 h-1.5 rounded-full" style={{ background: s.color }} />
                       {s.label}
                     </span>
                   </td>
-                  <td className="px-6 py-4 max-w-[200px]">
-                    <span className="text-xs font-mono truncate block" style={{ color: "var(--text-secondary)" }}>
-                      {inv.reasons || <span style={{ color: "var(--text-dim)" }}>—</span>}
+                  <td className="px-6 py-4 max-w-[220px]">
+                    <span className="text-xs truncate block" style={{ color: "var(--text-secondary)" }}>
+                      {inv.reasons || <span style={{ color: "var(--text-dim)" }}>None</span>}
                     </span>
                   </td>
                   <td className="px-6 py-4">
-                    <span className="text-xs font-mono" style={{ color: "var(--text-dim)" }}>
+                    <span className="text-xs" style={{ color: "var(--text-dim)" }}>
                       {inv.suggested_action}
                     </span>
                   </td>
