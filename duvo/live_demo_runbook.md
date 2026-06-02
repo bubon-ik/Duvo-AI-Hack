@@ -7,6 +7,13 @@
 - Team ID: `e0cf7830-28c0-47b7-a396-0833e3d59ef3`
 - Google Sheet: `vendor_invoice_autopilot_workbook`
 - Spreadsheet ID: `1kv_2Ggg_UOMkICiMH9a0IdhBhiSTuphFtYQpBNqn0gI`
+- Enabled Duvo skill: `Automatic Ordering`
+
+Final story name: `Procurement Control Tower`.
+
+Stage line:
+
+`Most AP automation starts when the invoice arrives. We start earlier: Duvo validates why the PO exists, then protects payment from bad invoices and closes the vendor loop.`
 
 ## Successful Live Runs
 
@@ -15,6 +22,8 @@
 | Clean invoice `INV-ACME-1042` | `a0935dd7-1fc5-495f-ac36-c9fa2db8f437` | `invoice_reviews!A2:N2` | `approved`, risk `5`, no human approval required |
 | Overcharged invoice `INV-ACME-1043` | `d846e86c-0f76-4efb-aa25-6a4123d2bf39` | `invoice_reviews!A3:N3` | `dispute`, risk `80`, caught EUR 900 overcharge, HITL approval before dispute email |
 | Missing PO invoice `INV-POS-881` | `221b04f2-2e63-41de-b53d-250616b3e3a3` | `invoice_reviews!A4:N4` | `needs_review`, risk `55`, HITL question and approval before vendor follow-up |
+| Live overcharge closed-loop `INV-LIVE-ACME-3001` | `1d00d8c0-e53f-481b-8d1c-69bd1a4f07b1` | `invoice_reviews!A5:N5` | `dispute` -> vendor correction -> `resolved`, risk `0` |
+| Live missing-PO closed-loop `INV-LIVE-POS-3002` | `861329f4-96af-4ca7-ba04-ab6529c1c2cb` | `invoice_reviews!A6:N6` | `needs_review` -> vendor PO confirmation -> `approved`, risk `0` |
 
 ## Closed-Loop Wow Moment
 
@@ -51,20 +60,23 @@ Stage line:
 
 ## Demo Storyline
 
-1. Show Gmail intake with the three `DUVO DEMO Invoice` messages.
-2. Show Duvo live execution for the overcharged invoice: Gmail read, Sheets read, validation table, Sheet append, HITL approval, Gmail send.
-3. Show `invoice_reviews` in Google Sheets:
+1. Show Sheet tabs: `demand_forecasts`, `inventory_position`, `supplier_rules`, `purchase_orders`, `invoice_reviews`.
+2. Show Gmail intake with the three `DUVO DEMO Invoice` messages.
+3. Show Duvo live execution for the overcharged invoice: Automatic Ordering context, Gmail read, Sheets read, validation table, Sheet append, HITL approval, Gmail send.
+4. Show `invoice_reviews` in Google Sheets:
    - clean invoice is approved automatically;
    - overcharged invoice is blocked before payment;
    - missing PO invoice is held for human/vendor clarification.
-4. Close with the audit trail: every decision includes status, risk score, reason, suggested action, approval requirement, and sent-email message ID.
+5. Close with the audit trail: every decision includes ordering context, status, risk score, reason, suggested action, approval requirement, and sent-email message ID.
 
 ## One-Time Setup
 
 1. Import `outputs/vendor_invoice_autopilot_workbook.xlsx` into Google Sheets.
 2. Share or keep it accessible to the Google account connected in Duvo.
 3. Copy the Google Sheet URL.
-4. Publish a new Duvo build with the exact Sheet URL:
+4. Enable the Duvo `Automatic Ordering` skill.
+5. Use `duvo/automatic_ordering_live_prompt.md` as the live assignment prompt.
+6. Publish a new Duvo build with the exact Sheet URL:
 
 ```bash
 export DUVO_API_KEY="dv_..."
