@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
 :root {
-  --bg-base: #0c0c0f;
-  --bg-panel: #111116;
-  --bg-panel-hover: #16161c;
-  --bg-surface: #1a1a22;
-  --border: #252530;
-  --border-bright: #32323f;
-  --text-primary: #e8e8f0;
-  --text-secondary: #8888a0;
-  --text-dim: #44445a;
+  --bg-base: #080c14;
+  --bg-panel: #0c1220;
+  --bg-panel-hover: #101828;
+  --bg-surface: #131e2e;
+  --border: #1a2640;
+  --border-bright: #253550;
+  --text-primary: #e0eaff;
+  --text-secondary: #7090b8;
+  --text-dim: #334466;
   --accent-red: #ff3b3b;
   --accent-red-dim: #2a1010;
   --accent-green: #00e676;
