@@ -1,5 +1,5 @@
 {
-  "name": "Vendor Invoice Dispute Autopilot",
+  "name": "Procurement Control Tower",
   "build": {
     "name": "hackathon-demo-v1",
     "config": {
@@ -14,7 +14,7 @@
             "model": "claude-sonnet-4-5"
           }
         },
-        "input": "Process new vendor invoice emails and vendor reply emails from Gmail. For new invoices, extract invoice details, validate them against the Google Sheet tabs named vendors, purchase_orders, and invoice_reviews, apply the uploaded invoice approval policy, write a review row to invoice_reviews, and use Human-in-the-Loop before sending dispute emails or marking high-value invoices ready for payment. For vendor replies, link the email to the existing invoice case, validate corrections or missing PO confirmations, update the case state, and close the loop in invoice_reviews.",
+        "input": "Process procurement-to-payment work. Before invoice validation, use the Duvo Automatic Ordering skill when available to validate or explain the upstream PO context using demand_forecasts, inventory_position, supplier_rules, and purchase_orders. Then process new vendor invoice emails and vendor reply emails from Gmail. For new invoices, extract invoice details, validate them against the Google Sheet tabs named vendors, purchase_orders, and invoice_reviews, apply the uploaded invoice approval policy, write a review row to invoice_reviews, and use Human-in-the-Loop before sending dispute emails or marking high-value invoices ready for payment. For vendor replies, link the email to the existing invoice case, validate corrections or missing PO confirmations, update the case state, and close the loop in invoice_reviews.",
         "text": {
           "format": {
             "type": "text"
@@ -25,9 +25,10 @@
           "Gmail",
           "Google Sheets",
           "Human in the Loop",
-          "Email Attachments Reader"
+          "Email Attachments Reader",
+          "Automatic Ordering"
         ],
-        "instructions": "Use the SOP in duvo/assignment_sop.md. Use duvo/invoice_approval_policy.md for status, risk routing, and case closure. Use duvo/dispute_email_style.md for vendor dispute drafts. Never send a vendor dispute email without human approval. Never mark invoices over EUR 5000 ready for payment without human approval. Never treat a vendor correction reply as a duplicate invoice; link it back to the existing open invoice case."
+        "instructions": "Use the SOP in duvo/assignment_sop.md. Use Automatic Ordering to validate PO context before invoice payment whenever the skill is available. Use duvo/invoice_approval_policy.md for status, risk routing, and case closure. Use duvo/dispute_email_style.md for vendor dispute drafts. Never send a vendor dispute email without human approval. Never mark invoices over EUR 5000 ready for payment without human approval. Never treat a vendor correction reply as a duplicate invoice; link it back to the existing open invoice case."
       }
     }
   }

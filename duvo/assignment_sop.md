@@ -1,29 +1,39 @@
-# Duvo Assignment SOP: Vendor Invoice Dispute Autopilot
+# Duvo Assignment SOP: Procurement Control Tower
 
-Goal: process vendor invoice emails, validate them against purchase order data, log the review in Google Sheets, request human approval before risky actions, and close the loop when vendors reply with corrections or missing PO information.
+Goal: validate the upstream purchasing intent with Duvo Automatic Ordering, process vendor invoice emails, validate them against purchase order data, log the review in Google Sheets, request human approval before risky actions, and close the loop when vendors reply with corrections or missing PO information.
 
 Inputs:
 
 - Gmail messages sent to the AP inbox.
-- Google Sheets tabs: `vendors`, `purchase_orders`, `invoice_reviews`.
+- Google Sheets tabs: `vendors`, `demand_forecasts`, `inventory_position`, `supplier_rules`, `purchase_orders`, `invoice_reviews`.
 - Uploaded policy files: `invoice_approval_policy.md` and `dispute_email_style.md`.
+- Duvo skill: `Automatic Ordering`.
+
+Procedure for upstream PO context:
+
+1. Before validating a new invoice, use `Automatic Ordering` when available to validate the PO context.
+2. Read `demand_forecasts`, `inventory_position`, and `supplier_rules` if the skill or workflow needs supporting data.
+3. Confirm that the PO being invoiced is backed by a real demand signal, inventory need, approved supplier rule, amount/currency limit, and delivery feasibility.
+4. If `Automatic Ordering` produces a validated PO recommendation, use it as supporting context for the invoice decision.
+5. If any optional Automatic Ordering data source is unavailable, continue with invoice validation and note the skipped gate in `reasons`.
 
 Procedure for new invoices:
 
 1. Find new Gmail messages that look like vendor invoices. Use the sender, subject, body, and attachments.
 2. Extract these fields: vendor name, invoice number, PO number, amount, currency, VAT rate, due date, and any line item summary available.
-3. Read the `vendors` and `purchase_orders` tabs from Google Sheets.
-4. Check whether the invoice number already exists in `invoice_reviews`.
-5. Validate the invoice against the uploaded approval policy.
-6. Assign one status:
+3. Run or reference `Automatic Ordering` for the invoice's PO context when the PO number is present or a likely PO match exists.
+4. Read the `vendors` and `purchase_orders` tabs from Google Sheets.
+5. Check whether the invoice number already exists in `invoice_reviews`.
+6. Validate the invoice against the uploaded approval policy and the Automatic Ordering result.
+7. Assign one status:
    - `approved` when the invoice matches all policy checks.
    - `needs_review` when data is missing or ambiguous.
    - `dispute` when the invoice appears incorrect or risky.
-7. Write a row into `invoice_reviews` with timestamp, extracted fields, status, risk score, reasons, suggested action, approval requirement, draft email if relevant, `case_state`, and `resolution_notes`.
-8. If status is `approved` and amount is below EUR 5000, do not ask for approval. Mark suggested action as "Mark ready for payment".
-9. If status is `needs_review`, ask a Human-in-the-Loop question with options: "Ask vendor for missing PO", "Escalate to AP owner", "Reject invoice".
-10. If status is `dispute`, draft a vendor email using `dispute_email_style.md`. Request Human-in-the-Loop approval before sending. If denied, ask what to change and revise the draft.
-11. Never send a vendor email, mark a high-value invoice ready for payment, or modify payment status without approval.
+8. Write a row into `invoice_reviews` with timestamp, extracted fields, status, risk score, reasons, suggested action, approval requirement, draft email if relevant, `case_state`, and `resolution_notes`.
+9. If status is `approved` and amount is below EUR 5000, do not ask for approval. Mark suggested action as "Mark ready for payment".
+10. If status is `needs_review`, ask a Human-in-the-Loop question with options: "Ask vendor for missing PO", "Escalate to AP owner", "Reject invoice".
+11. If status is `dispute`, draft a vendor email using `dispute_email_style.md`. Request Human-in-the-Loop approval before sending. If denied, ask what to change and revise the draft.
+12. Never send a vendor email, mark a high-value invoice ready for payment, or modify payment status without approval.
 
 Procedure for vendor replies:
 
@@ -48,4 +58,4 @@ Approval title format:
 
 Demo note:
 
-During the live demo, open the Duvo live execution view and narrate the checks as they appear: extraction, Sheets lookup, policy reasoning, row write, approval request, draft dispute email, vendor reply handling, and final case closure.
+During the live demo, open the Duvo live execution view and narrate the checks as they appear: Automatic Ordering PO context, extraction, Sheets lookup, policy reasoning, row write, approval request, draft dispute email, vendor reply handling, and final case closure.

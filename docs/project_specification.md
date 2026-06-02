@@ -1,17 +1,19 @@
-# Vendor Invoice Dispute Autopilot - Project Specification
+# Procurement Control Tower - Project Specification
 
 ## 1. Elevator Pitch
 
-Vendor Invoice Dispute Autopilot is a Duvo-powered accounts payable automation that reads incoming vendor invoice emails, extracts invoice details, validates them against purchase order and vendor policy data, logs the decision in Google Sheets, and asks for human approval before risky actions.
+Procurement Control Tower is a Duvo-powered procurement-to-payment automation that uses Automatic Ordering to validate the upstream PO context, reads incoming vendor invoice emails, extracts invoice details, validates them against purchase order and vendor policy data, logs the decision in Google Sheets, and asks for human approval before risky actions.
 
 The core promise:
 
-"Stop manually checking invoices. Duvo catches overcharges, duplicate invoices, missing PO numbers, and policy mismatches before money leaves the company."
+"Stop manually stitching procurement and AP together. Duvo validates why the PO exists, catches overcharges, duplicate invoices, missing PO numbers, and policy mismatches before money leaves the company."
 
 ## 2. Problem
 
-Accounts payable teams receive invoice emails every day. The work is repetitive but risky:
+Procurement and accounts payable teams receive invoice emails every day. The work is repetitive but risky:
 
+- Confirm there was real demand for the purchase.
+- Confirm the vendor and PO satisfy ordering rules.
 - Open email and attachment.
 - Find invoice number, vendor, PO, amount, VAT, due date.
 - Check whether the PO exists.
@@ -39,6 +41,7 @@ Secondary users:
 
 The hackathon demo is successful if it shows:
 
+- A PO context is validated through Automatic Ordering.
 - An invoice email enters the workflow.
 - Duvo extracts key invoice fields.
 - Duvo checks vendor and PO data in Google Sheets.
@@ -49,16 +52,17 @@ The hackathon demo is successful if it shows:
 
 Judging alignment:
 
-- Real workflow and complexity: invoice intake, extraction, validation, routing, audit.
-- Use of Duvo capabilities: Gmail, Google Sheets, Files, Human-in-the-Loop, live execution/audit trail.
+- Real workflow and complexity: demand/PO validation, invoice intake, extraction, validation, routing, audit.
+- Use of Duvo capabilities: Automatic Ordering, Gmail, Google Sheets, Files, Human-in-the-Loop, live execution/audit trail.
 - Business impact: fewer overpayments, faster AP processing, better compliance.
-- Originality: not generic expense approval; focused on vendor invoice dispute prevention.
+- Originality: not generic expense approval; focused on a closed procurement-to-payment control loop.
 
 ## 5. In Scope
 
 The one-day build includes:
 
 - Synthetic vendor and PO dataset.
+- Automatic Ordering support data: demand forecasts, inventory position, and supplier rules.
 - Three to five demo invoices.
 - Duvo SOP for the assignment.
 - Google Sheets schema.

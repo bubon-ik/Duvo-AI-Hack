@@ -15,6 +15,9 @@ def main():
     workbook.remove(workbook.active)
 
     add_csv_sheet(workbook, "vendors", ROOT / "data" / "vendors.csv")
+    add_csv_sheet(workbook, "demand_forecasts", ROOT / "data" / "demand_forecasts.csv")
+    add_csv_sheet(workbook, "inventory_position", ROOT / "data" / "inventory_position.csv")
+    add_csv_sheet(workbook, "supplier_rules", ROOT / "data" / "supplier_rules.csv")
     add_csv_sheet(workbook, "purchase_orders", ROOT / "data" / "purchase_orders.csv")
     add_csv_sheet(workbook, "invoice_reviews", ROOT / "data" / "invoice_reviews_template.csv")
     add_csv_sheet(workbook, "demo_reviews_backup", ROOT / "out" / "invoice_reviews.csv")
