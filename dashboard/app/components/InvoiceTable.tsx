@@ -1,35 +1,24 @@
+"use client";
 import { Invoice } from "../data/invoices";
-import { AlertTriangle, CheckCircle, Clock } from "lucide-react";
 
 const statusConfig = {
-  approved: {
-    label: "Approved",
-    className: "bg-green-100 text-green-700",
-    icon: CheckCircle,
-  },
-  needs_review: {
-    label: "Needs Review",
-    className: "bg-yellow-100 text-yellow-700",
-    icon: Clock,
-  },
-  dispute: {
-    label: "Dispute",
-    className: "bg-red-100 text-red-700",
-    icon: AlertTriangle,
-  },
+  approved:     { label: "APPROVED",     color: "#00e676", bg: "rgba(0,230,118,0.08)",     dot: "#00e676" },
+  needs_review: { label: "NEEDS REVIEW", color: "#ffb300", bg: "rgba(255,179,0,0.08)",     dot: "#ffb300" },
+  dispute:      { label: "DISPUTE",      color: "#ff3b3b", bg: "rgba(255,59,59,0.08)",     dot: "#ff3b3b" },
 };
 
-function RiskBadge({ score }: { score: number }) {
-  const color =
-    score >= 80
-      ? "bg-red-100 text-red-700"
-      : score >= 40
-      ? "bg-yellow-100 text-yellow-700"
-      : "bg-green-100 text-green-700";
+function RiskBar({ score }: { score: number }) {
+  const color = score >= 80 ? "#ff3b3b" : score >= 40 ? "#ffb300" : "#00e676";
   return (
-    <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold ${color}`}>
-      {score}
-    </span>
+    <div className="flex items-center gap-2">
+      <div className="w-16 h-1 rounded-full" style={{ background: "var(--bg-surface)" }}>
+        <div
+          className="h-full rounded-full transition-all"
+          style={{ width: `${score}%`, background: color, boxShadow: `0 0 6px ${color}88` }}
+        />
+      </div>
+      <span className="font-mono text-xs font-medium" style={{ color, minWidth: "2rem" }}>{score}</span>
+    </div>
   );
 }
 
@@ -37,52 +26,102 @@ export default function InvoiceTable({ invoices }: { invoices: Invoice[] }) {
   const risky = [...invoices].sort((a, b) => b.risk_score - a.risk_score);
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-      <div className="px-6 py-4 border-b border-gray-100">
-        <h2 className="text-base font-semibold text-gray-900">Latest Risky Invoices</h2>
-        <p className="text-xs text-gray-400 mt-0.5">Sorted by risk score</p>
+    <div
+      className="animate-fade-up rounded-sm overflow-hidden"
+      style={{
+        animationDelay: "500ms",
+        background: "var(--bg-panel)",
+        border: "1px solid var(--border)",
+      }}
+    >
+      {/* Table header */}
+      <div
+        className="px-6 py-4 flex items-center justify-between"
+        style={{ borderBottom: "1px solid var(--border)", background: "var(--bg-surface)" }}
+      >
+        <div>
+          <h2 className="text-xs font-mono font-semibold tracking-[0.15em] uppercase" style={{ color: "var(--text-primary)" }}>
+            Latest Risky Invoices
+          </h2>
+          <p className="text-[10px] font-mono mt-0.5" style={{ color: "var(--text-dim)" }}>
+            sorted by risk score — {risky.length} records
+          </p>
+        </div>
+        <div className="flex items-center gap-1.5">
+          <div className="w-1.5 h-1.5 rounded-full pulse-dot" style={{ background: "#ff3b3b" }} />
+          <span className="text-[10px] font-mono" style={{ color: "var(--text-dim)" }}>LIVE</span>
+        </div>
       </div>
+
       <div className="overflow-x-auto">
-        <table className="w-full text-sm">
+        <table className="w-full">
           <thead>
-            <tr className="bg-gray-50 text-xs text-gray-500 uppercase tracking-wide">
-              <th className="px-6 py-3 text-left">Invoice</th>
-              <th className="px-6 py-3 text-left">Vendor</th>
-              <th className="px-6 py-3 text-left">Amount</th>
-              <th className="px-6 py-3 text-left">Risk</th>
-              <th className="px-6 py-3 text-left">Status</th>
-              <th className="px-6 py-3 text-left">Issue</th>
-              <th className="px-6 py-3 text-left">Action</th>
+            <tr style={{ borderBottom: "1px solid var(--border)" }}>
+              {["Invoice #", "Vendor", "Amount", "Risk", "Status", "Issue", "Action"].map(h => (
+                <th
+                  key={h}
+                  className="px-6 py-3 text-left text-[9px] font-mono font-medium tracking-[0.2em] uppercase"
+                  style={{ color: "var(--text-dim)", background: "var(--bg-base)" }}
+                >
+                  {h}
+                </th>
+              ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-50">
-            {risky.map((inv) => {
+          <tbody>
+            {risky.map((inv, i) => {
               const s = statusConfig[inv.status];
-              const Icon = s.icon;
               return (
-                <tr key={inv.invoice_number} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-6 py-4 font-mono text-xs text-gray-700 font-medium">
-                    {inv.invoice_number}
-                  </td>
-                  <td className="px-6 py-4 text-gray-800">{inv.vendor_name}</td>
-                  <td className="px-6 py-4 text-gray-800">
-                    {inv.amount != null
-                      ? `€${inv.amount.toLocaleString("cs-CZ")}`
-                      : <span className="text-gray-400 italic">—</span>}
+                <tr
+                  key={inv.invoice_number}
+                  className="group transition-colors"
+                  style={{
+                    borderBottom: i < risky.length - 1 ? "1px solid var(--border)" : undefined,
+                    animationDelay: `${600 + i * 60}ms`,
+                  }}
+                  onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = "var(--bg-panel-hover)"}
+                  onMouseLeave={e => (e.currentTarget as HTMLElement).style.background = "transparent"}
+                >
+                  <td className="px-6 py-4">
+                    <span className="font-mono text-xs font-medium" style={{ color: "#448aff" }}>
+                      {inv.invoice_number}
+                    </span>
                   </td>
                   <td className="px-6 py-4">
-                    <RiskBadge score={inv.risk_score} />
+                    <span className="text-sm font-medium" style={{ color: "var(--text-primary)" }}>
+                      {inv.vendor_name}
+                    </span>
                   </td>
                   <td className="px-6 py-4">
-                    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${s.className}`}>
-                      <Icon size={11} />
+                    <span className="font-mono text-sm font-medium" style={{ color: "var(--text-primary)" }}>
+                      {inv.amount != null
+                        ? `€${inv.amount.toLocaleString("cs-CZ")}`
+                        : <span style={{ color: "var(--text-dim)" }}>—</span>
+                      }
+                    </span>
+                  </td>
+                  <td className="px-6 py-4">
+                    <RiskBar score={inv.risk_score} />
+                  </td>
+                  <td className="px-6 py-4">
+                    <span
+                      className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-sm text-[10px] font-mono font-semibold tracking-wider"
+                      style={{ color: s.color, background: s.bg, border: `1px solid ${s.color}33` }}
+                    >
+                      <span className="w-1 h-1 rounded-full" style={{ background: s.dot }} />
                       {s.label}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-gray-500 text-xs max-w-[200px] truncate">
-                    {inv.reasons || <span className="text-gray-300">—</span>}
+                  <td className="px-6 py-4 max-w-[200px]">
+                    <span className="text-xs font-mono truncate block" style={{ color: "var(--text-secondary)" }}>
+                      {inv.reasons || <span style={{ color: "var(--text-dim)" }}>—</span>}
+                    </span>
                   </td>
-                  <td className="px-6 py-4 text-gray-500 text-xs">{inv.suggested_action}</td>
+                  <td className="px-6 py-4">
+                    <span className="text-xs font-mono" style={{ color: "var(--text-dim)" }}>
+                      {inv.suggested_action}
+                    </span>
+                  </td>
                 </tr>
               );
             })}
