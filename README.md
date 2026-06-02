@@ -39,6 +39,14 @@ flowchart LR
 
 In the batch demo, Duvo processed three invoice emails, reordered them by risk, blocked EUR 10,150 in duplicate and overcharged payments, requested approval, sent vendor dispute emails, and updated `invoice_reviews` with Gmail message IDs.
 
+## Live proof
+
+- Duvo run: `5715c7c8-62f9-4e00-9794-1ffc64d82724`
+- Google Sheets output: `invoice_reviews!A7:N9`
+- Batch result: 3 invoices processed, 3 disputes, EUR 10,150 blocked.
+- Human-in-the-Loop: approval required before sending all vendor dispute emails.
+- Dashboard Agent summary: count by status, money at risk, open cases, Automatic Ordering context, Gmail message IDs, and Sheet rows updated.
+
 ## What is in this repo
 
 - `src/vendor_invoice_autopilot.py` - deterministic review engine used for local validation and demo output.
